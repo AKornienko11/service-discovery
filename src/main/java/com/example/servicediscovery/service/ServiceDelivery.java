@@ -14,4 +14,5 @@ public interface ServiceDelivery {
     public String delete(Long id);
 
     String send(EmailRequest request);
+
 }

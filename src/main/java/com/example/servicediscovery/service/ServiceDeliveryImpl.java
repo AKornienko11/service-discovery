@@ -84,4 +84,5 @@ public class ServiceDeliveryImpl implements ServiceDelivery {
         IntegrationInfoEntity info = integrationRepository.findById(integrationInfoId).get();
         return info.getUrl();
     }
+
 }

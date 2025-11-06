@@ -52,4 +52,5 @@ public class EmailRequest {
                 ", message='" + message + '\'' +
                 '}';
     }
+
 }
