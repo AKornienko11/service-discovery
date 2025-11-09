@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  discovery-app:
+    build: .
+
+    ports:
+      - "8098:8098"
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    external: true
+volumes:
+  db:

@@ -40,7 +40,6 @@ public class ServiceRegistryController {
     public String sendEmail(@RequestBody EmailRequest request) {
         return serviceDelivery.send(request);
     }
-
 }
 
 

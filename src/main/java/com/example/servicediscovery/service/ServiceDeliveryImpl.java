@@ -1,9 +1,8 @@
 package com.example.servicediscovery.service;
 
-import com.example.servicediscovery.dto.IntegrationInfoEntity;
 import com.example.servicediscovery.dto.UserDTO;
 import com.example.servicediscovery.emailrequest.EmailRequest;
-import com.example.servicediscovery.repository.IntegrationRepository;
+import com.example.servicediscovery.service.InitialUrl.InitialisationUrl;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -12,16 +11,16 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class ServiceDeliveryImpl implements ServiceDelivery {
 
-    private IntegrationRepository integrationRepository;
+    private InitialisationUrl initialisationUrl;
     private RestTemplate restTemplate = new RestTemplate();
 
-    public ServiceDeliveryImpl(IntegrationRepository integrationRepository) {
-        this.integrationRepository = integrationRepository;
+    public ServiceDeliveryImpl(InitialisationUrl initialisationUrl) {
+        this.initialisationUrl = initialisationUrl;
     }
 
     @Override
     public String create(UserDTO userDTO) {
-        String url = prepareUrlForIntegration(2L);
+        String url = initialisationUrl.prepareUrlForIntegration("post");
         HttpEntity<?> requestEntity = new HttpEntity<>(userDTO);
         return restTemplate.exchange(
                         url,
@@ -33,7 +32,7 @@ public class ServiceDeliveryImpl implements ServiceDelivery {
 
     @Override
     public String update(UserDTO userDTO) {
-        String url = prepareUrlForIntegration(3L);
+        String url = initialisationUrl.prepareUrlForIntegration("update");
         HttpEntity<?> requestEntity = new HttpEntity<>(userDTO);
         return restTemplate.exchange(
                         url,
@@ -45,7 +44,7 @@ public class ServiceDeliveryImpl implements ServiceDelivery {
 
     @Override
     public UserDTO getInfoById(Long id) {
-        String url = prepareUrlForIntegration(1L);
+        String url = initialisationUrl.prepareUrlForIntegration("get");
         HttpEntity<?> requestEntity = new HttpEntity<>(null);
         return this.restTemplate.exchange(
                         url + id,
@@ -58,7 +57,7 @@ public class ServiceDeliveryImpl implements ServiceDelivery {
 
     @Override
     public String delete(Long id) {
-        String url = prepareUrlForIntegration(4L);
+        String url = initialisationUrl.prepareUrlForIntegration("delete");
         HttpEntity<?> requestEntity = new HttpEntity<>(null);
         return this.restTemplate.exchange(
                         url + id,
@@ -70,7 +69,7 @@ public class ServiceDeliveryImpl implements ServiceDelivery {
 
     @Override
     public String send(EmailRequest request) {
-        String url = prepareUrlForIntegration(5L);
+        String url = initialisationUrl.prepareUrlForIntegration("send");
         HttpEntity<?> requestEntity = new HttpEntity<>(request);
         return restTemplate.exchange(
                         url,
@@ -78,11 +77,6 @@ public class ServiceDeliveryImpl implements ServiceDelivery {
                         requestEntity,
                         String.class)
                 .getBody();
-    }
-
-    private String prepareUrlForIntegration(Long integrationInfoId) {
-        IntegrationInfoEntity info = integrationRepository.findById(integrationInfoId).get();
-        return info.getUrl();
     }
 
 }
